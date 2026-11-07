@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#172554">
+  <title>Algoritma Penjadwalan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#dashboard" data-page="dashboard" aria-label="CPU Scheduler Dashboard">
+        <span class="brand-mark"><i data-lucide="cpu"></i></span>
+        <span><strong>CPU Scheduler</strong><small>Scheduling Simulator</small></span>
+      </a>
+      <div class="nav-label">MENU UTAMA</div>
+      <nav class="nav-menu" aria-label="Navigasi utama">
+        <button class="nav-link active" data-page="dashboard"><i data-lucide="layout-dashboard"></i><span>Dashboard</span></button>
+        <button class="nav-link" data-page="priority"><i data-lucide="list-ordered"></i><span>Priority Scheduling</span></button>
+        <button class="nav-link" data-page="srtf"><i data-lucide="timer"></i><span>SRTF Scheduling</span></button>
+        <button class="nav-link" data-page="comparison"><i data-lucide="chart-no-axes-combined"></i><span>Perbandingan</span></button>
+        <button class="nav-link" data-page="guide"><i data-lucide="book-open"></i><span>Panduan Penggunaan</span></button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="sidebar-note"><i data-lucide="lightbulb"></i><div><strong>Tips</strong><p>Gunakan data contoh untuk mencoba simulasi pertama.</p></div></div>
+        <div class="sidebar-version">CPU Scheduler <span>v1.0</span></div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <button class="icon-button mobile-menu" id="menu-toggle" aria-label="Buka navigasi"><i data-lucide="menu"></i></button>
+        <div class="breadcrumb"><span>Workspace</span><i data-lucide="chevron-right"></i><strong id="breadcrumb-current">Dashboard</strong></div>
+        <div class="topbar-right"><span class="status-dot"></span><span class="avatar">CS</span></div>
+      </header>
+
+      <section class="page active" id="page-dashboard">
+        <div class="page-heading"><div><span class="eyebrow">OVERVIEW</span><h1>Dashboard</h1><p>Kelola proses dan pahami cara kerja algoritma penjadwalan CPU.</p></div><button class="button button-primary" data-go="priority"><i data-lucide="plus"></i> Mulai Simulasi</button></div>
+        <div class="stat-grid">
+          <article class="stat-card"><div class="stat-icon blue"><i data-lucide="layers"></i></div><div><span class="stat-label">Jumlah Proses</span><strong id="stat-processes">0</strong><small>Data proses tersimpan</small></div></article>
+          <article class="stat-card"><div class="stat-icon violet"><i data-lucide="workflow"></i></div><div><span class="stat-label">Algoritma</span><strong>2</strong><small>Priority dan SRTF</small></div></article>
+          <article class="stat-card"><div class="stat-icon green"><i data-lucide="check-circle-2"></i></div><div><span class="stat-label">Status</span><strong class="status-text">Aktif</strong><small>Siap melakukan simulasi</small></div></article>
+        </div>
+        <div class="section-title"><div><h2>Mulai dari algoritma</h2><p>Pilih metode yang ingin dipelajari atau disimulasikan.</p></div></div>
+        <div class="algorithm-cards">
+          <article class="algorithm-card"><div class="algorithm-icon priority-icon"><i data-lucide="list-ordered"></i></div><span class="tag">NON-PREEMPTIVE</span><h3>Priority Scheduling</h3><p>CPU menjalankan proses dengan tingkat prioritas tertinggi dari proses yang sudah tiba. Proses yang sedang berjalan tidak dihentikan di tengah jalan.</p><button class="text-button" data-go="priority">Buka simulasi <i data-lucide="arrow-right"></i></button></article>
+          <article class="algorithm-card"><div class="algorithm-icon srtf-icon"><i data-lucide="timer"></i></div><span class="tag">PREEMPTIVE</span><h3>Shortest Remaining Time First</h3><p>CPU selalu memilih proses siap dengan sisa waktu eksekusi paling singkat. Proses dapat digantikan ketika proses baru tiba.</p><button class="text-button" data-go="srtf">Buka simulasi <i data-lucide="arrow-right"></i></button></article>
+        </div>
+        <div class="section-title section-title-spaced"><div><h2>Data proses</h2><p>Data yang sama digunakan untuk kedua algoritma.</p></div><button class="button button-secondary button-small" data-go="priority">Kelola data proses <i data-lucide="arrow-right"></i></button></div>
+        <div class="panel table-panel"><div class="table-wrap"><table><thead><tr><th>Process ID</th><th>Arrival Time</th><th>Burst Time</th><th>Priority</th></tr></thead><tbody id="dashboard-process-table"></tbody></table></div></div>
+      </section>
+
+      <section class="page" id="page-priority">
+        <div class="page-heading"><div><span class="eyebrow">ALGORITHM / 01</span><h1>Priority Scheduling</h1><p>Penjadwalan non-preemptive berdasarkan tingkat prioritas proses.</p></div><span class="method-badge"><i data-lucide="lock"></i> Non-preemptive</span></div>
+        <div class="info-banner"><i data-lucide="info"></i><p><strong>Aturan prioritas:</strong> angka prioritas yang lebih kecil berarti tingkat prioritas lebih tinggi. Jika nilainya sama, proses dengan Arrival Time lebih awal dipilih terlebih dahulu.</p></div>
+        <div class="workspace-grid">
+          <div class="panel form-panel"><div class="panel-heading"><div><h2 id="form-title">Tambah proses</h2><p>Masukkan informasi proses yang akan dijadwalkan.</p></div><span class="step-number">01</span></div>
+            <form id="process-form">
+              <div class="form-grid"><label>Process ID (PID)<input id="pid" type="text" maxlength="12" placeholder="Contoh: P1" required></label><label>Arrival Time (AT)<input id="arrival" type="number" min="0" step="1" placeholder="0" required></label><label>Burst Time (BT)<input id="burst" type="number" min="1" step="1" placeholder="5" required></label><label>Priority<input id="priority-value" type="number" min="0" step="1" placeholder="1" required></label></div>
+              <p class="field-hint">Gunakan bilangan bulat. Burst Time harus lebih dari 0.</p>
+              <div class="form-actions"><button type="submit" class="button button-primary" id="save-process"><i data-lucide="plus"></i> Tambah proses</button><button type="button" class="button button-ghost hidden" id="cancel-edit">Batal edit</button></div>
+            </form>
+          </div>
+          <div class="panel note-panel"><div class="note-icon"><i data-lucide="database"></i></div><h3>Input terpusat</h3><p>Tambahkan proses satu kali. Data tersebut dapat langsung digunakan untuk menghitung Priority Scheduling maupun SRTF.</p><div class="note-foot"><i data-lucide="shield-check"></i> Data tersimpan otomatis di browser</div></div>
+        </div>
+        <div class="section-title section-title-spaced"><div><h2>Daftar proses</h2><p id="process-count-label">0 proses ditambahkan</p></div><div class="inline-actions"><button class="button button-secondary button-small" id="load-sample"><i data-lucide="wand-sparkles"></i> Data contoh</button><button class="button button-danger-ghost button-small" id="clear-processes"><i data-lucide="trash-2"></i> Hapus semua</button></div></div>
+        <div class="panel table-panel"><div class="table-wrap"><table><thead><tr><th>Process ID</th><th>Arrival Time</th><th>Burst Time</th><th>Priority</th><th class="actions-col">Aksi</th></tr></thead><tbody id="process-table"></tbody></table></div></div>
+        <div class="result-toolbar"><div><h2>Hasil simulasi</h2><p>Hitung urutan eksekusi dan metrik setiap proses.</p></div><button class="button button-primary" id="run-priority"><i data-lucide="play"></i> Hitung Priority</button></div>
+        <div id="priority-results" class="results-area"><div class="empty-state"><i data-lucide="chart-no-axes-column-increasing"></i><strong>Belum ada hasil perhitungan</strong><span>Tambahkan proses, lalu tekan tombol Hitung Priority.</span></div></div>
+      </section>
+
+      <section class="page" id="page-srtf">
+        <div class="page-heading"><div><span class="eyebrow">ALGORITHM / 02</span><h1>SRTF Scheduling</h1><p>Penjadwalan preemptive berdasarkan sisa waktu eksekusi terpendek.</p></div><span class="method-badge violet-badge"><i data-lucide="refresh-cw"></i> Preemptive</span></div>
+        <div class="info-banner violet-banner"><i data-lucide="info"></i><p><strong>Aturan SRTF:</strong> CPU memilih proses dengan Remaining Time paling kecil. Jika ada proses baru yang memiliki sisa waktu lebih pendek, proses berjalan dapat dihentikan sementara.</p></div>
+        <div class="panel compact-process-panel"><div class="panel-heading"><div><h2>Data proses yang digunakan</h2><p>Gunakan data yang telah dimasukkan pada halaman Priority Scheduling.</p></div><button class="button button-secondary button-small" data-go="priority">Kelola data <i data-lucide="arrow-right"></i></button></div><div class="table-wrap"><table><thead><tr><th>Process ID</th><th>Arrival Time</th><th>Burst Time</th><th>Priority</th></tr></thead><tbody id="srtf-process-table"></tbody></table></div></div>
+        <div class="result-toolbar"><div><h2>Hasil simulasi</h2><p>Setiap pergantian proses akan ditampilkan pada Gantt Chart.</p></div><button class="button button-primary" id="run-srtf"><i data-lucide="play"></i> Hitung SRTF</button></div>
+        <div id="srtf-results" class="results-area"><div class="empty-state"><i data-lucide="chart-gantt"></i><strong>Belum ada hasil perhitungan</strong><span>Tekan Hitung SRTF untuk memulai simulasi.</span></div></div>
+      </section>
+
+      <section class="page" id="page-comparison">
+        <div class="page-heading">
+          <div><span class="eyebrow">ANALYSIS</span><h1>Perbandingan Algoritma</h1><p>Bandingkan performa Priority Scheduling dan SRTF menggunakan data proses yang sama.</p></div><button class="button button-primary" id="run-comparison"><i data-lucide="refresh-cw"></i> Perbarui perbandingan</button></div>
+        <div id="comparison-results"><div class="empty-state"><i data-lucide="chart-no-axes-combined"></i><strong>Belum ada data perbandingan</strong><span>Tambahkan proses dan jalankan perhitungan kedua algoritma.</span></div></div>
+      </section>
+
+      <section class="page" id="page-guide">
+        <div class="page-heading"><div><span class="eyebrow">HELP CENTER</span><h1>Panduan Penggunaan</h1><p>Pelajari konsep dasar dan langkah menggunakan CPU Scheduler.</p></div></div>
+        <div class="guide-layout"><article class="panel guide-main"><h2>Apa itu CPU Scheduling?</h2><p>CPU Scheduling adalah proses penentuan proses mana yang memperoleh kesempatan menggunakan CPU. Tujuannya mengatur eksekusi proses secara efisien dan membantu mengukur waktu tunggu maupun waktu penyelesaian.</p>
+          <h2>Priority Scheduling</h2><p>Priority Scheduling pada aplikasi ini menggunakan metode <strong>Non-Preemptive</strong>. Dari proses yang sudah tiba dan menunggu, CPU memilih proses dengan angka prioritas paling kecil. Setelah dimulai, proses berjalan sampai selesai.</p><h2>Shortest Remaining Time First (SRTF)</h2><p>SRTF merupakan versi preemptive dari Shortest Job First. CPU memilih proses dengan sisa Burst Time paling kecil. Jika proses baru datang dan memiliki sisa waktu lebih singkat, CPU dapat beralih ke proses tersebut.</p><h2>Rumus perhitungan</h2><div class="formula-grid"><div><span>Turnaround Time</span><strong>TAT = CT − AT</strong></div><div><span>Waiting Time</span><strong>WT = TAT − BT</strong></div><div><span>Response Time</span><strong>RT = First Start − AT</strong></div></div><p class="guide-muted">CT adalah Completion Time, AT adalah Arrival Time, BT adalah Burst Time, dan First Start adalah waktu pertama proses mulai dieksekusi.</p><h2>Langkah penggunaan</h2><ol class="guide-steps"><li><strong>Masukkan data proses.</strong> Buka Priority Scheduling, lalu isi PID, Arrival Time, Burst Time, dan Priority.</li><li><strong>Kelola data.</strong> Gunakan tombol edit atau hapus untuk memperbaiki data. Tombol Data contoh dapat mengisi beberapa proses otomatis.</li><li><strong>Jalankan simulasi.</strong> Tekan Hitung Priority atau Hitung SRTF pada halaman algoritma.</li><li><strong>Baca hasil.</strong> Periksa tabel metrik, Gantt Chart, dan nilai rata-rata.</li><li><strong>Bandingkan.</strong> Buka menu Perbandingan untuk melihat hasil kedua algoritma.</li></ol></article><aside class="panel guide-aside"><div class="aside-icon"><i data-lucide="book-check"></i></div><h3>Cara membaca Gantt Chart</h3><p>Setiap blok menunjukkan proses yang menggunakan CPU. Angka di bawah blok menunjukkan waktu mulai dan waktu selesai.</p><div class="mini-gantt"><span class="mini-block p-one">P1</span><span class="mini-block p-two">P2</span><span class="mini-block idle">Idle</span></div><div class="legend-list"><span><i class="legend-dot p-one"></i>Proses</span><span><i class="legend-dot idle"></i>CPU Idle</span></div><hr><h3>Catatan simulasi</h3><p>Semua waktu menggunakan bilangan bulat. Jika terjadi nilai seri, urutan pemilihan ditentukan dengan Arrival Time lebih awal, lalu urutan input.</p></aside></div>
+      </section>
+      <footer class="footer"><span>Dibuat untuk pembelajaran Sistem Operasi</span></footer>
+    </main>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
